@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="SafeVault.App.Views.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:SafeVault.App.ViewModels">
+
+    <Page.Resources>
+        <Style x:Key="SettingCardStyle" TargetType="Border">
+            <Setter Property="Padding" Value="20,16" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}" />
+            <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}" />
+        </Style>
+        <DataTemplate x:Key="DelayTemplate" x:DataType="vm:DelayOption">
+            <TextBlock Text="{x:Bind Label}" />
+        </DataTemplate>
+    </Page.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Spacing="8" MaxWidth="820" HorizontalAlignment="Left">
+            <TextBlock Text="Paramètres" Style="{StaticResource TitleTextBlockStyle}" Margin="0,0,0,16" />
+
+            <!-- Sécurité -->
+            <TextBlock Text="Sécurité" Style="{StaticResource BodyStrongTextBlockStyle}" Margin="0,0,0,4" />
+
+            <Border Style="{StaticResource SettingCardStyle}">
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="&#xE72E;" FontSize="20" VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="Verrouillage automatique" />
+                        <TextBlock Text="Le coffre se verrouille après cette durée sans activité dans SafeVault."
+                                   Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="Wrap"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    </StackPanel>
+                    <ComboBox Grid.Column="2" MinWidth="160" VerticalAlignment="Center"
+                              AutomationProperties.Name="Verrouillage automatique"
+                              ItemsSource="{x:Bind ViewModel.AutoLockOptions}"
+                              SelectedItem="{x:Bind ViewModel.SelectedAutoLock, Mode=TwoWay}"
+                              ItemTemplate="{StaticResource DelayTemplate}" />
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource SettingCardStyle}">
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="&#xE8C8;" FontSize="20" VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="Effacement du presse-papiers" />
+                        <TextBlock Text="Un identifiant ou un mot de passe copié est effacé du presse-papiers après ce délai."
+                                   Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="Wrap"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    </StackPanel>
+                    <ComboBox Grid.Column="2" MinWidth="160" VerticalAlignment="Center"
+                              AutomationProperties.Name="Effacement du presse-papiers"
+                              ItemsSource="{x:Bind ViewModel.ClipboardOptions}"
+                              SelectedItem="{x:Bind ViewModel.SelectedClipboardDelay, Mode=TwoWay}"
+                              ItemTemplate="{StaticResource DelayTemplate}" />
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource SettingCardStyle}">
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="&#xE8D7;" FontSize="20" VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="Master Password" />
+                        <TextBlock Text="Changez le mot de passe qui protège votre coffre."
+                                   Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="Wrap"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    </StackPanel>
+                    <Button Grid.Column="2" Content="Changer…" MinWidth="160"
+                            Command="{x:Bind ViewModel.ChangeMasterPasswordCommand}" />
+                </Grid>
+            </Border>
+
+            <!-- Sauvegardes -->
+            <TextBlock Text="Sauvegardes" Style="{StaticResource BodyStrongTextBlockStyle}" Margin="0,16,0,4" />
+            <Border Style="{StaticResource SettingCardStyle}">
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="&#xEDE1;" FontSize="20" VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="Exporter une sauvegarde chiffrée" />
+                        <TextBlock Text="Fichier .svbackup protégé par un mot de passe de votre choix (AES-256-GCM, Argon2id). Conservez-le hors de ce PC."
+                                   Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="Wrap"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    </StackPanel>
+                    <Button Grid.Column="2" Content="Exporter…" MinWidth="160" VerticalAlignment="Center"
+                            AutomationProperties.Name="Exporter une sauvegarde"
+                            Command="{x:Bind ViewModel.ExportBackupCommand}" />
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource SettingCardStyle}">
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="&#xE777;" FontSize="20" VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="Restaurer une sauvegarde" />
+                        <TextBlock Text="L'intégrité du fichier est vérifiée avant la restauration. Le contenu actuel du coffre est remplacé ; en cas d'erreur, il reste intact."
+                                   Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="Wrap"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    </StackPanel>
+                    <Button Grid.Column="2" Content="Restaurer…" MinWidth="160" VerticalAlignment="Center"
+                            AutomationProperties.Name="Restaurer une sauvegarde"
+                            Command="{x:Bind ViewModel.RestoreBackupCommand}" />
+                </Grid>
+            </Border>
+
+            <!-- Raccourcis -->
+            <TextBlock Text="Raccourcis clavier" Style="{StaticResource BodyStrongTextBlockStyle}" Margin="0,16,0,4" />
+            <Border Style="{StaticResource SettingCardStyle}">
+                <Grid RowSpacing="8" ColumnSpacing="24">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Ctrl + F" FontFamily="Cascadia Mono, Consolas" />
+                    <TextBlock Grid.Column="1" Text="Rechercher" />
+                    <TextBlock Grid.Row="1" Text="Ctrl + N" FontFamily="Cascadia Mono, Consolas" />
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="Ajouter un identifiant" />
+                    <TextBlock Grid.Row="2" Text="Ctrl + L" FontFamily="Cascadia Mono, Consolas" />
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="Verrouiller le coffre" />
+                </Grid>
+            </Border>
+
+            <!-- À propos -->
+            <TextBlock Text="À propos" Style="{StaticResource BodyStrongTextBlockStyle}" Margin="0,16,0,4" />
+            <Border Style="{StaticResource SettingCardStyle}">
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Spacing="4">
+                        <TextBlock>
+                            <Run Text="SafeVault " /><Run Text="{x:Bind ViewModel.Version}" />
+                        </TextBlock>
+                        <TextBlock Text="Stockage 100 % local : aucun serveur, aucun compte, aucune télémétrie."
+                                   Style="{StaticResource CaptionTextBlockStyle}"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        <TextBlock Text="{x:Bind ViewModel.DatabasePath}" IsTextSelectionEnabled="True"
+                                   Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="Wrap"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    </StackPanel>
+                    <Button Grid.Column="1" VerticalAlignment="Center" Content="Ouvrir l'emplacement"
+                            Command="{x:Bind ViewModel.OpenVaultFolderCommand}" />
+                </Grid>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

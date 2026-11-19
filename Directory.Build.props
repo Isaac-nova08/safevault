@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <!-- Version des assemblys affichée sans identifiant de commit Git. -->
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+  </PropertyGroup>
+</Project>

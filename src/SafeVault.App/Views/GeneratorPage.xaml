@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="SafeVault.App.Views.GeneratorPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:views="using:SafeVault.App.Views">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Spacing="24" MaxWidth="720" HorizontalAlignment="Left">
+            <StackPanel Spacing="4">
+                <TextBlock Text="Générateur" Style="{StaticResource TitleTextBlockStyle}" />
+                <TextBlock Text="Mots de passe aléatoires produits par un générateur cryptographiquement sûr."
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+            </StackPanel>
+
+            <!-- Résultat -->
+            <Border Padding="20" CornerRadius="8" BorderThickness="1"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                <StackPanel Spacing="14">
+                    <Grid ColumnSpacing="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="{x:Bind ViewModel.GeneratedPassword, Mode=OneWay}"
+                                   AutomationProperties.Name="Mot de passe généré"
+                                   FontFamily="Cascadia Mono, Consolas"
+                                   FontSize="22"
+                                   IsTextSelectionEnabled="True"
+                                   TextWrapping="Wrap"
+                                   VerticalAlignment="Center" />
+
+                        <Button Grid.Column="1" Command="{x:Bind ViewModel.GenerateCommand}"
+                                ToolTipService.ToolTip="Générer un autre mot de passe"
+                                AutomationProperties.Name="Générer">
+                            <FontIcon Glyph="&#xE72C;" FontSize="16" />
+                        </Button>
+                        <Button Grid.Column="2" Style="{StaticResource AccentButtonStyle}"
+                                Command="{x:Bind ViewModel.CopyCommand}"
+                                AutomationProperties.Name="Copier">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <FontIcon Glyph="&#xE8C8;" FontSize="14" />
+                                <TextBlock Text="Copier" />
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+
+                    <Grid ColumnSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <ProgressBar Maximum="4" VerticalAlignment="Center"
+                                     Value="{x:Bind ViewModel.StrengthValue, Mode=OneWay}"
+                                     Foreground="{x:Bind views:GeneratorPage.StrengthBrush(ViewModel.StrengthValue), Mode=OneWay}" />
+                        <TextBlock Grid.Column="1" MinWidth="140" TextAlignment="Right"
+                                   Text="{x:Bind ViewModel.StrengthLabel, Mode=OneWay}"
+                                   Style="{StaticResource CaptionTextBlockStyle}" />
+                    </Grid>
+
+                    <InfoBar IsOpen="{x:Bind ViewModel.HasError, Mode=OneWay}" IsClosable="False"
+                             Severity="Warning" Message="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}" />
+                </StackPanel>
+            </Border>
+
+            <!-- Réglages -->
+            <Border Padding="20" CornerRadius="8" BorderThickness="1"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                <StackPanel Spacing="12">
+                    <Grid>
+                        <TextBlock Text="Longueur" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                        <TextBlock HorizontalAlignment="Right" Text="{x:Bind ViewModel.LengthLabel, Mode=OneWay}" />
+                    </Grid>
+                    <Slider Minimum="8" Maximum="64" StepFrequency="1"
+                            AutomationProperties.Name="Longueur"
+                            Value="{x:Bind ViewModel.Length, Mode=TwoWay}" />
+
+                    <TextBlock Text="Caractères" Style="{StaticResource BodyStrongTextBlockStyle}" Margin="0,8,0,0" />
+                    <CheckBox Content="Majuscules (A-Z)" IsChecked="{x:Bind ViewModel.IncludeUppercase, Mode=TwoWay}" />
+                    <CheckBox Content="Minuscules (a-z)" IsChecked="{x:Bind ViewModel.IncludeLowercase, Mode=TwoWay}" />
+                    <CheckBox Content="Chiffres (0-9)" IsChecked="{x:Bind ViewModel.IncludeDigits, Mode=TwoWay}" />
+                    <CheckBox Content="Caractères spéciaux (!@#$%…)" IsChecked="{x:Bind ViewModel.IncludeSymbols, Mode=TwoWay}" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>
